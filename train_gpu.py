@@ -35,9 +35,9 @@ def get_args_parser():
         'UNetKAN training and evaluation script', add_help=False)
 
     # Dataset parameters
-    parser.add_argument("--Kvasir_path", type=str, default='/mnt/d/MedicalSeg/Kvasir-SEG/',
+    parser.add_argument("--Kvasir_path", type=str, default='/content/drive/MyDrive/kvasir-dataset-for-classification-and-segmentation/kvasir-seg/Kvasir-SEG',
                         help="path to Kvasir Dataset")
-    parser.add_argument("--ClinicDB_path", type=str, default='/mnt/d/MedicalSeg/CVC-ClinicDB/',
+    parser.add_argument("--ClinicDB_path", type=str, default='/content/drive/MyDrive/cvcclinicdb/PNG',
                         help="path to CVC-ClinicDBDataset")
     parser.add_argument('--predict', default=False, type=bool, help='Estimate Your model')
     parser.add_argument("--img_size", type=int, default=256, help="input size")
