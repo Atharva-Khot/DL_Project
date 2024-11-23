@@ -67,3 +67,32 @@ def dice_loss(x: torch.Tensor, target: torch.Tensor, multiclass: bool = False, i
     x = nn.functional.softmax(x, dim=1)
     fn = multiclass_dice_coeff if multiclass else dice_coeff
     return 1 - fn(x, target, ignore_index=ignore_index)
+
+def TwerkyLoss(input, target, alpha=0.5, beta=0.5, smooth=1e-5):
+    """
+    Twerky loss combines a custom formulation of binary cross-entropy with 
+    a modified Dice coefficient for enhanced segmentation accuracy.
+    
+    Parameters:
+        input (torch.Tensor): Predicted tensor of logits.
+        target (torch.Tensor): Ground truth tensor.
+        alpha (float): Weight for the BCE component.
+        beta (float): Weight for the Dice component.
+        smooth (float): Smoothing constant to prevent division by zero.
+    
+    Returns:
+        torch.Tensor: Computed Twerky loss.
+    """
+    # Binary Cross-Entropy part
+    bce = F.binary_cross_entropy_with_logits(input, target)
+
+    # Dice component
+    input = torch.sigmoid(input)
+    intersection = (input * target).sum(dim=(2, 3))
+    dice = (2. * intersection + smooth) / (input.sum(dim=(2, 3)) + target.sum(dim=(2, 3)) + smooth)
+    dice_loss = 1 - dice.mean(dim=1)
+
+    # Twerky Loss as a weighted sum of BCE and Dice components
+    twerky_loss = alpha * bce + beta * dice_loss.mean()
+
+    return twerky_loss
