@@ -63,9 +63,10 @@ class KvasirDataSet(Dataset):
         self.train_mode = train_mode
         self.transform = transform
 
-        self.img_files1 = glob.glob(os.path.join(Kvasir_folder, 'images', '*.jpg'))
-        self.img_files2 = glob.glob(os.path.join(ClinicDB_folder, 'Original', '*.png'))
-
+        self.img_files1 = glob.glob(os.path.join(Kvasir_folder, 'kvasir-seg/Kvasir-SEG/images', '*.jpg'))
+        self.img_files2 = glob.glob(os.path.join(ClinicDB_folder, 'PNG/Original', '*.png'))
+        #print(os.path.join(Kvasir_folder, 'kvasir-seg/Kvasir-SEG/images', '*.jpg'))
+        #print(os.path.join(ClinicDB_folder, 'PNG/Original', '*.png'))
         if self.train_mode:
             self.img_files1 = self.img_files1
             self.img_files2 = self.img_files2
@@ -73,13 +74,13 @@ class KvasirDataSet(Dataset):
         else:  # use random 20% dataset for valid_data
             self.img_files1 = sample(self.img_files1, len(self.img_files1) // 5)
             self.img_files2 = sample(self.img_files2, len(self.img_files2) // 5)
-
+        #print("abc")
         self.mask_files1 = []
         for img_path in self.img_files1:
-            self.mask_files1.append(os.path.join(Kvasir_folder, 'masks', os.path.basename(img_path)))
+            self.mask_files1.append(os.path.join(Kvasir_folder, 'kvasir-seg/Kvasir-SEG/masks', os.path.basename(img_path)))
         self.mask_files2 = []
         for img_path in self.img_files2:
-            self.mask_files2.append(os.path.join(ClinicDB_folder, 'Ground Truth', os.path.basename(img_path)))
+            self.mask_files2.append(os.path.join(ClinicDB_folder, 'PNG/Ground Truth', os.path.basename(img_path)))
 
     def __getitem__(self, index):
 
@@ -110,6 +111,7 @@ class KvasirDataSet(Dataset):
 
     def __len__(self):
         return len(self.img_files1) + len(self.img_files2)
+
 
 
 # if __name__ == '__main__':
