@@ -35,9 +35,9 @@ def get_args_parser():
         'UNetKAN training and evaluation script', add_help=False)
 
     # Dataset parameters
-    parser.add_argument("--Kvasir_path", type=str, default='/content/drive/MyDrive/kvasir-dataset-for-classification-and-segmentation/kvasir-seg/Kvasir-SEG',
+    parser.add_argument("--Kvasir_path", type=str, default='./kvasir',
                         help="path to Kvasir Dataset")
-    parser.add_argument("--ClinicDB_path", type=str, default='/content/drive/MyDrive/cvcclinicdb/PNG',
+    parser.add_argument("--ClinicDB_path", type=str, default='./CVC',
                         help="path to CVC-ClinicDBDataset")
     parser.add_argument('--predict', default=False, type=bool, help='Estimate Your model')
     parser.add_argument("--img_size", type=int, default=256, help="input size")
@@ -130,7 +130,7 @@ def get_args_parser():
     parser.add_argument('--device', default='cuda',
                         help='device to use for training / testing')
     parser.add_argument('--seed', default=0, type=int)
-    parser.add_argument('--resume', default='', help='resume from checkpoint')
+    parser.add_argument('--resume', default='./output/UKAN_large_best_model.pth', help='resume from checkpoint')
     parser.add_argument('--eval', action='store_true',
                         help='Perform evaluation only')
     parser.add_argument('--dist-eval', action='store_true',
@@ -174,7 +174,7 @@ def main(args):
     best_acc = 0.0
     device = args.device
 
-    results_file = "results{}.txt".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+    results_file = "./results/results{}.txt".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
 
     train_set, valid_set = build_dataset(args)
 
